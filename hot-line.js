@@ -3,12 +3,12 @@ function getElement(id){
     return element;
 }
 
-document.getElementById('heart-icon').addEventListener('click', function(){
-    const heartCount = getElement('heart-count');
-    let count = parseInt(heartCount.innerText);
-    count += 1;
-    heartCount.innerText = count;
-})
+// document.getElementById('heart-icon').addEventListener('click', function(){
+//     const heartCount = getElement('heart-count');
+//     let count = parseInt(heartCount.innerText);
+//     count += 1;
+//     heartCount.innerText = count;
+// })
 
 // document.getElementById('copy-btn').addEventListener('click', function(){
 //     const copyCount = getElement('copy-count');
@@ -18,46 +18,117 @@ document.getElementById('heart-icon').addEventListener('click', function(){
 // })
 
 
-  document.getElementById('copy-btn').addEventListener('click', function (e) {
-    const copyCount = getElement('copy-count');
-    let count = parseInt(copyCount.innerText);
-    count += 1;
-    copyCount.innerText = count;
-    const section = e.target.closest("section");
-    const paragraph = section.querySelector("p");
-    navigator.clipboard.writeText(paragraph.innerText)
-      .then(() => {
-        alert("Copied: " + paragraph.innerText);
-      })
+//   document.getElementById('copy-btn').addEventListener('click', function (e) {
+//     const copyCount = getElement('copy-count');
+//     let count = parseInt(copyCount.innerText);
+//     count += 1;
+//     copyCount.innerText = count;
+//     const section = e.target.closest("section");
+//     const paragraph = section.querySelector("p");
+//     navigator.clipboard.writeText(paragraph.innerText)
+//       .then(() => {
+//         alert("Copied: " + paragraph.innerText);
+//       })
       
-  });
+//   });
 
-document.getElementById('call-btn').addEventListener('click', function()
-{
-    const coinCount = getElement('coin-count');
-    let count = parseInt(coinCount.innerText);
-    if(count <20){
-        alert('Do not have enough coin');
-        return;
-    }
-    count -= 20;
-    coinCount.innerText = count;
+// document.getElementById('call-btn').addEventListener('click', function()
+// {
+//     const coinCount = getElement('coin-count');
+//     let count = parseInt(coinCount.innerText);
+//     if(count <20){
+//         alert('Do not have enough coin');
+//         return;
+//     }
+//     count -= 20;
+//     coinCount.innerText = count;
 
-    const title = document.querySelector('.card-title').innerText;
-    const Number = document.querySelector('.number').innerText;
-    const data = {
-        date: new Date().toLocaleTimeString(),
-    }
-    const historyContainer = getElement('history-container')
-    const newHistory = document.createElement('div')
-    newHistory.innerHTML = `
-                    <div class="flex justify-between items-center bg-slate-100 rounded-lg">
+//     const title = document.querySelector('.card-title').innerText;
+//     const Number = document.querySelector('.number').innerText;
+//     const data = {
+//         date: new Date().toLocaleTimeString(),
+//     }
+//     const historyContainer = getElement('history-container')
+//     const newHistory = document.createElement('div')
+//     newHistory.innerHTML = `
+//                     <div class="flex justify-between items-center bg-slate-100 rounded-lg">
+//                         <div>
+//                             <h1>${title}</h1>
+//                             <p>${Number}</p>
+//                         </div>
+//                         <p>${data.date}</p>
+//                     </div>
+//     `;
+//     historyContainer.append(newHistory)
+// })
+
+
+const heartBtns = document.getElementsByClassName(' heart-btn')
+console.log(heartBtns)
+for(let heartButton of heartBtns){
+    heartButton.addEventListener('click', function(){
+        const heartCount = heartButton.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.children[0].children[1].children[0].children[0];
+        let count = parseInt(heartCount.innerText);
+        count += 1;
+        heartCount.innerText = count;
+    })
+}
+
+const copyBtns = document.getElementsByClassName('copy-btn')
+console.log(copyBtns)
+for(let copyButton of copyBtns){
+    copyButton.addEventListener('click', function(){
+        const helpNumber = copyButton.parentNode.parentNode.children[3].innerText;
+        console.log(helpNumber)
+        alert('Copied: ' + helpNumber)
+        const copyCount = copyButton.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.children[0].children[1].children[2].children[0];
+        let count = parseInt(copyCount.innerText);
+        count += 1;
+        copyCount.innerText = count;
+        navigator.clipboard.writeText(helpNumber)
+    })
+}
+
+
+const callBtns = document.getElementsByClassName('call-line-btn')
+console.log(callBtns)
+
+for(let callButton of callBtns){
+    callButton.addEventListener('click', function(){
+        const helpHeading = callButton.parentNode.parentNode.children[1].innerText;
+        const helpNumber = callButton.parentNode.parentNode.children[3].innerText;
+        const callTime = new Date().toLocaleTimeString();
+        console.log(helpHeading, helpNumber, callTime)
+        
+        alert(`Calling ${helpHeading} ${helpNumber}`)
+        const coinCount = callButton.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.children[0].children[1].children[1].children[0];
+        let count = parseInt(coinCount.innerText);
+        if(count < 20){
+            alert('Do not have enough coin');
+            return;
+        }
+        count -=20;
+        coinCount.innerText = count;
+
+
+        const historyContainer = getElement('history-container');
+
+        const newHistory = document.createElement('div');
+        newHistory.innerHTML = `
+                    <div class="flex justify-between items-center rounded-lg bg-white p-4">
                         <div>
-                            <h1>${title}</h1>
-                            <p>${Number}</p>
+                            <h1>${helpHeading}</h1>
+                            <p>${helpNumber}</p>
                         </div>
-                        <p>${data.date}</p>
+                        <p>${callTime}</p>
                     </div>
-    `;
-    historyContainer.append(newHistory)
+        `
+        historyContainer.append(newHistory)
+    })
+}
+
+document.getElementById('btn-clear').addEventListener('click', function(){
+    const historyContainer = getElement('history-container');
+    historyContainer.innerHTML = '';
 })
+
